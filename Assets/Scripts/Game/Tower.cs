@@ -36,7 +36,7 @@ public class Tower : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log("Tower is dead");
-        FindObjectOfType<Spawner>().RevertCellState(cellPosition);
+        FindFirstObjectByType<Spawner>()?.RevertCellState(cellPosition);
         Destroy(gameObject);
     }
 }
