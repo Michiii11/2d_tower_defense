@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour {
     }
 
     void OnMouseDown(){
-        _wall.SetActive(true);
+        if(GameState.Instance.playMode == PlayMode.PLACE){
+            _wall.SetActive(true);
+        }
     }
 }
