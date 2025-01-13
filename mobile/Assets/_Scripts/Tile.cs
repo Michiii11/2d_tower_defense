@@ -26,6 +26,12 @@ public class Tile : MonoBehaviour {
         {
             tileCollider.isTrigger = true;
         }
+
+        // Ensure the Wall GameObject has a Collider2D component
+        if (_wall != null && _wall.GetComponent<Collider2D>() == null)
+        {
+            _wall.AddComponent<BoxCollider2D>(); // Adjust to fit your object
+        }
     }
 
     // Method to place a block on the tile

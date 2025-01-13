@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
         }
 
         rb.linearVelocityY = 0;
-        transform.position = new Vector3(0, 0, 0); 
+        transform.position = new Vector3(0, 0, -1); 
     }
 
     void Update()
