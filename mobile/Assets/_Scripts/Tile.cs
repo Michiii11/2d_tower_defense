@@ -20,7 +20,7 @@ public class Tile : MonoBehaviour {
     private void Awake()
     {
         gameObject.tag = "Tile"; // Set the tag to "Tile"
-        
+
         // Add or get the Rigidbody2D component
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
@@ -50,7 +50,7 @@ public class Tile : MonoBehaviour {
         transform.position = new Vector3(transform.position.x, transform.position.y, -1); // Set Z position to -1
         // Additional logic to visually indicate the block
     }
- 
+
     void OnMouseEnter() {
         _highlight.SetActive(true);
     }
@@ -61,7 +61,8 @@ public class Tile : MonoBehaviour {
     }
 
     void OnMouseDown(){
-        PlaceBlock();
+        if(GameState.Instance.playMode == PlayMode.PLACE){
+            PlaceBlock();
+        }
     }
 }
-

@@ -13,6 +13,8 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
+
+        Debug.Log("test");
     }
 
     void GenerateGrid()
