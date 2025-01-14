@@ -8,9 +8,9 @@ public class Tile : MonoBehaviour {
     [SerializeField] private GameObject _highlight;
     [SerializeField] private GameObject _wall;
 
-    public bool IsOccupied { get; private set; }
+    public Rigidbody2D rb;
 
-    private Rigidbody2D rb;
+    public bool IsOccupied { get; private set; }
 
     public void Init(bool isOffset)
     {
@@ -32,6 +32,14 @@ public class Tile : MonoBehaviour {
         {
             _wall.AddComponent<BoxCollider2D>(); // Adjust to fit your object
         }
+
+        // Ensure the Tile GameObject has a Rigidbody2D component
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
+        }
+        rb.bodyType = RigidbodyType2D.Static; // Set Rigidbody2D to Static
     }
 
     // Method to place a block on the tile
@@ -39,6 +47,8 @@ public class Tile : MonoBehaviour {
     {
         IsOccupied = true;
         _wall.SetActive(true);
+        _wall.tag = "Block"; // Set the tag to "Block"
+        rb.tag = "Block";
         transform.position = new Vector3(transform.position.x, transform.position.y, -1); // Set Z position to -1
         _wall.GetComponent<Collider2D>().enabled = true; // Enable collider for the block to interact with the enemy
         _wall.GetComponent<Collider2D>().isTrigger = false; // Disable trigger mode to block the enemy
