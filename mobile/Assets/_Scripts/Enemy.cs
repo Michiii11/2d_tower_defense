@@ -8,7 +8,9 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     public GridManager gridManager;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float raycastDistance = 1.0f; // Distance for checking obstacles above
+
+    // Start is called before the first execution of Update
     void Start()
     {
         // Add or get the Rigidbody2D component
@@ -19,18 +21,19 @@ public class Enemy : MonoBehaviour
         {
             rb = gameObject.AddComponent<Rigidbody2D>();
         }
-        rb.bodyType = RigidbodyType2D.Dynamic; // Use Dynamic for physics-based movement
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.freezeRotation = true;
-        rb.gravityScale = 0; // Disable gravity
+        rb.gravityScale = 0;
 
         // Add a Collider2D if missing
         if (GetComponent<Collider2D>() == null)
         {
-            gameObject.AddComponent<BoxCollider2D>(); // Adjust to fit your object
+            gameObject.AddComponent<BoxCollider2D>();
         }
 
-        rb.linearVelocityY = 0;
-        transform.position = new Vector3(0, 0, -1); 
+        // Set initial values
+        transform.position = new Vector3(0, 0, -1);
+        velocity = Vector2.up * speed;
     }
 
     void Update(){
@@ -82,6 +85,11 @@ public class Enemy : MonoBehaviour
             {
                 Debug.LogWarning("No tile found above the current tile.");
             }
+        }
+        else
+        {
+            // Path above is clear, move upward
+            velocity = Vector2.up * speed;
         }
 
         //Debug.Log("Enemy Position: " + transform.position); // Log position to track movement
