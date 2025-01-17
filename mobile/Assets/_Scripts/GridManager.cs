@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
     public Tile GetTileAtWorldPosition(Vector3 worldPosition)
     {
         // Convert world position to grid position
-        Vector2 gridPosition = new Vector2(Mathf.FloorToInt(worldPosition.x), Mathf.FloorToInt(worldPosition.y));
+        Vector2 gridPosition = new Vector2(Mathf.CeilToInt(worldPosition.x), Mathf.CeilToInt(worldPosition.y));
 
         // Retrieve tile from the grid using the grid position
         if (_tiles.TryGetValue(gridPosition, out Tile tile))

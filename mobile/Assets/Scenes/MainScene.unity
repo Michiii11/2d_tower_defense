@@ -295,7 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6d4615df822c6d42a00889b679f1158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cam: {fileID: 519420031}
 --- !u!212 &271582309
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -619,6 +618,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   health: 0
+  gridManager: {fileID: 1217050771}
+  raycastDistance: 1
 --- !u!212 &648489394
 SpriteRenderer:
   m_ObjectHideFlags: 0

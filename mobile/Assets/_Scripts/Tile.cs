@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour {
 
     public Rigidbody2D rb;
 
-    public bool IsOccupied { get; private set; }
+    public TileType tileType { get; private set; }
 
     public void Init(bool isOffset)
     {
@@ -45,7 +45,7 @@ public class Tile : MonoBehaviour {
     // Method to place a block on the tile
     public void PlaceBlock()
     {
-        IsOccupied = true;
+        tileType = TileType.WALL;
         _wall.SetActive(true);
         _wall.tag = "Block"; // Set the tag to "Block"
         rb.tag = "Block";
@@ -68,4 +68,10 @@ public class Tile : MonoBehaviour {
             PlaceBlock();
         }
     }
+}
+
+public enum TileType
+{
+    EMPTY,
+    WALL
 }

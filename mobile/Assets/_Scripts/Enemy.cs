@@ -32,8 +32,7 @@ public class Enemy : MonoBehaviour
         }
 
         // Set initial values
-        transform.position = new Vector3(0, 0, -1);
-        velocity = Vector2.up * speed;
+        transform.position = new Vector3(3, 0, -1);
     }
 
     void Update(){
@@ -42,24 +41,22 @@ public class Enemy : MonoBehaviour
         
 
         //walk forward
-        if (movementDirection == Direction.UP)
-        {
+        if (movementDirection == Direction.UP){
             rb.linearVelocityY = speed;
-            //Debug.Log("Enemy Velocity: " + rb.linearVelocityY); // Log current velocity
+            rb.linearVelocityX = 0;
+        }
+        else{
+            rb.linearVelocityY = 0;
         }
 
         //walk right
-        if (movementDirection == Direction.RIGHT)
-        {
+        if (movementDirection == Direction.RIGHT){
             rb.linearVelocityX = speed;
-            //Debug.Log("Enemy Velocity: " + rb.linearVelocityY); // Log current velocity
         }
         
         //walk left
-        if (movementDirection == Direction.LEFT)
-        {
+        if (movementDirection == Direction.LEFT){
             rb.linearVelocityX = -speed;
-            //Debug.Log("Enemy Velocity: " + rb.linearVelocityY); // Log current velocity
         }
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -68,10 +65,17 @@ public class Enemy : MonoBehaviour
         {
             Vector2 topLeft = spriteRenderer.bounds.min;
 
+            Debug.Log("Top Left: " + topLeft);
+
             Vector2 topRight = new Vector2(spriteRenderer.bounds.max.x, spriteRenderer.bounds.min.y);
 
-            Vector2 gridPosition = gridManager.GetCoordinatesOfTile(gridManager.GetTileAtWorldPosition
-            (topLeft)).Value;
+            Tile currentTile = gridManager.GetTileAtWorldPosition(topLeft);
+
+            if(currentTile == null) return;
+
+            Vector2 gridPosition = gridManager.GetCoordinatesOfTile(currentTile).Value;
+
+            Debug.Log("Grid Position: " + gridPosition);
 
             Vector2 tileAbovePosition = new Vector2(gridPosition.x, gridPosition.y + 1); 
 
@@ -80,16 +84,15 @@ public class Enemy : MonoBehaviour
             if (tileAbove != null)
             {
                 Debug.Log("Tile above found: " + tileAbove.name);
+
+                if(tileAbove.tileType != TileType.WALL){
+                    movementDirection = Direction.UP;
+                }
             }
             else
             {
                 Debug.LogWarning("No tile found above the current tile.");
             }
-        }
-        else
-        {
-            // Path above is clear, move upward
-            velocity = Vector2.up * speed;
         }
 
         //Debug.Log("Enemy Position: " + transform.position); // Log position to track movement
