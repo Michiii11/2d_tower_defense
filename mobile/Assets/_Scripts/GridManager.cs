@@ -6,22 +6,14 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private Transform _cam;
-
+    private Dictionary<Vector2, Tile> _tiles;  // Lookup by grid coordinates
     [SerializeField] private int _width, _height;
     [SerializeField] private int _offsetLeft = 0, _offsetBottom = 0;
-
-    private Dictionary<Vector2, Tile> _tiles;  // Lookup by grid coordinates
-    private Dictionary<int, Enemy> _enemies = new Dictionary<int, Enemy>();
 
     void Start()
     {
         GenerateGrid();
-
-        Debug.Log("Tile 3 3: " + GetTileAtWorldPosition(new Vector3(3,3,0)));
-        
-        //
     }
 
     void GenerateGrid()
@@ -57,36 +49,6 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void StartWave(){
-        StartCoroutine(SpawnEnemiesForDuration(60f));
-    }
-
-    IEnumerator SpawnEnemiesForDuration(float duration)
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < duration)
-        {
-            SpawnEnemy();
-            yield return new WaitForSeconds(1f); // Wait for 1 second
-            elapsedTime += 1f;
-        }
-    }
-
-    public void SpawnEnemy(){
-        if(GameState.Instance.playMode != PlayMode.PLAY){
-            return;
-        }
-
-        System.Random random = new System.Random();
-
-        var spawnedEnemy = Instantiate(_enemyPrefab, new Vector3(random.Next(1, 9), -1f, 0), Quaternion.identity);
-        spawnedEnemy.name = $"Enemy {_enemies.Count}";
-
-        spawnedEnemy.Init(this);
-
-        _enemies[_enemies.Count] = spawnedEnemy;
-    }
-
     /// <summary>
     /// Get a tile at the specified grid coordinates.
     /// </summary>
@@ -99,7 +61,7 @@ public class GridManager : MonoBehaviour
             return tile;
         }
 
-        //Debug.LogWarning($"No tile found at coordinates ({x}, {y})");
+        Debug.LogWarning($"No tile found at coordinates ({x}, {y})");
         return null;
     }
 
@@ -116,7 +78,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        //Debug.LogWarning("Tile not found in the grid.");
+        Debug.LogWarning("Tile not found in the grid.");
         return null; // Return null if the tile is not found
     }
 
@@ -126,7 +88,7 @@ public class GridManager : MonoBehaviour
     public Tile GetTileAtWorldPosition(Vector3 worldPosition)
     {
         // Convert world position to grid position
-        Vector2 gridPosition = new Vector2(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y));
+        Vector2 gridPosition = new Vector2(Mathf.CeilToInt(worldPosition.x), Mathf.CeilToInt(worldPosition.y));
 
         // Retrieve tile from the grid using the grid position
         if (_tiles.TryGetValue(gridPosition, out Tile tile))
@@ -134,7 +96,7 @@ public class GridManager : MonoBehaviour
             return tile;
         }
 
-        //Debug.LogWarning($"No tile found at world position {worldPosition}");
+        Debug.LogWarning($"No tile found at world position {worldPosition}");
         return null;
     }
 }

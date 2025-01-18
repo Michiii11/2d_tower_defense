@@ -6,12 +6,11 @@ TagManager:
   tags:
   - Block
   - Tile
-  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Enemy
+  - 
   - Water
   - UI
   - 
